@@ -11,3 +11,4 @@ class User(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=uuid4())
     name = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(60), nullable=False, unique=True)
+    image_url = db.Column(db.String)
