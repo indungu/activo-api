@@ -8,4 +8,4 @@ class BaseModel(db.Model):
 
     __abstract__ = True
 
-    id = db.Column(db.String(36), primary_key=True, default=uuid.uuid4())
+    id = db.Column(db.String(36), primary_key=True, default=uuid.uuid4)
