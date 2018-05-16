@@ -5,7 +5,7 @@ def initialize_errorhandlers(application):
     '''
     Initialize error handlers
     '''
-    from api.utilities.base_validator import middleware as middleware_blueprint
+    from api.middlewares.base_validator import middleware_blueprint
     application.register_blueprint(middleware_blueprint)
 
 

@@ -3,7 +3,7 @@ from flask import jsonify
 from flask_script import Manager
 from main import create_app
 from config import config
-from api.utilities.token_required import token_required
+from api.middlewares.token_required import token_required
 
 configuration = config[env('ENV') or 'development']
 app = create_app(configuration)

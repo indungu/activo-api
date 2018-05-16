@@ -22,7 +22,7 @@ def token_required(function):
         message="Authorization failed. Please contact support."
     )
     NO_BEARER_MSG = dict(
-        message="Invalid Token. The token should begin with the word 'Bearer'."
+        message="Bad request. The token should begin with the word 'Bearer'."
     )
     NO_TOKEN_MSG = dict(
         message="Bad request. Header does not contain an authorization token."
@@ -54,13 +54,16 @@ def token_required(function):
             )
         except ValueError:
             raise ValidationError(SERVER_ERROR_MESSAGE, 500)
+         
+        except TypeError:
+            raise ValidationError(SERVER_ERROR_MESSAGE, 500)
        
         except jwt.ExpiredSignatureError:
             raise ValidationError(EXPIRED_TOKEN_MSG)
 
         except jwt.DecodeError as error:
             if str(error) == 'Signature verification failed':
-                raise ValidationError(SIGNATURE_ERROR, 400)
+                raise ValidationError(SIGNATURE_ERROR, 500)
 
             else:
                 raise ValidationError(INVALID_TOKEN_MSG, 401)
