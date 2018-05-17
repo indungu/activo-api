@@ -3,4 +3,4 @@
 .vscode
 .DS_STORE
 __pycache__
-activo-env/
+venv
