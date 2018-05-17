@@ -1,9 +1,13 @@
+"""Module for Auditable Base Model"""
+
 from datetime import datetime
+
+from .base_model import BaseModel
 from ..database import db
 
 
-class AuditableModel(db.Model):
-    """ Auditable model """
+class AuditableBaseModel(BaseModel):
+    """ Auditable base model """
 
     __abstract__ = True
 

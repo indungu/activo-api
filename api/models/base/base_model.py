@@ -1,3 +1,5 @@
+"""Module for Base Model"""
+
 import uuid
 
 from ..database import db
