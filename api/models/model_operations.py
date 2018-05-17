@@ -5,13 +5,12 @@ class ModelOperations(object):
     def save(self):
         """
         Save a model instance
-
         :return: Model instance
         """
-
         db.session.add(self)
         db.session.commit()
         return self
+
     def update(self, **kwargs):
         """
         update entries
@@ -21,7 +20,7 @@ class ModelOperations(object):
             db.session.commit()
 
     @classmethod
-    def get_one(cls, id):
+    def get(cls, id):
         """
         return entries by id
         """
@@ -35,12 +34,11 @@ class ModelOperations(object):
         db.session.commit()
 
     @classmethod
-    def get_all(cls):
+    def querying(cls):
         """
         return all database entries
         """
-        all_entries = cls.query.all()
-        db.session.commit()
+        all_entries = cls.query
         return all_entries
  
     @classmethod
@@ -49,5 +47,4 @@ class ModelOperations(object):
         return total entries in the database
         """
         counts = cls.query.count()
-        db.session.commit()
         return counts
