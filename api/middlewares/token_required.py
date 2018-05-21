@@ -1,3 +1,5 @@
+"""Module for token validation"""
+
 from flask import request
 from os import getenv as env
 from base64 import b64decode
@@ -38,12 +40,12 @@ def token_required(function):
 
         elif 'bearer' not in token.lower():
             raise ValidationError(NO_BEARER_MSG)
-      
+
         try:
             token = token.split(' ')[1]
             public_key64 = env('JWT_PUBLIC_KEY')
             public_key = b64decode(public_key64).decode('utf-8')
-            jwt.decode(
+            decoded_token = jwt.decode(
                 token,
                 public_key,
                 algorithms=['RS256'],
@@ -54,10 +56,10 @@ def token_required(function):
             )
         except ValueError:
             raise ValidationError(SERVER_ERROR_MESSAGE, 500)
-         
+
         except TypeError:
             raise ValidationError(SERVER_ERROR_MESSAGE, 500)
-       
+
         except jwt.ExpiredSignatureError:
             raise ValidationError(EXPIRED_TOKEN_MSG)
 
@@ -67,6 +69,10 @@ def token_required(function):
 
             else:
                 raise ValidationError(INVALID_TOKEN_MSG, 401)
+
+        # setting the payload to the request object and can be accessed with \
+        # request.decoded_token from the view
+        setattr(request, 'decoded_token', decoded_token)
         return function(*args, **kwargs)
 
     return decorated_function
