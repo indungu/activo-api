@@ -10,9 +10,7 @@ config_name = getenv('FLASK_ENV', default='production')
 
 
 def initialize_errorhandlers(application):
-    '''
-    Initialize error handlers
-    '''
+    ''' Initialize error handlers '''
     from api.middlewares.base_validator import middleware_blueprint
     application.register_blueprint(middleware_blueprint)
 

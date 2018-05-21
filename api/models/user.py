@@ -1,14 +1,12 @@
 """Module for User model."""
-from uuid import uuid4
 
 from .database import db
+from .base.base_model import BaseModel
 
-
-class User(db.Model):
+class User(BaseModel):
     """Class for user db table."""
-
+    
     __tablename__ = 'users'
-    id = db.Column(db.String(36), primary_key=True, default=uuid4())
     name = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(60), nullable=False, unique=True)
     image_url = db.Column(db.String)
