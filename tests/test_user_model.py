@@ -17,7 +17,7 @@ class TestUserModel:
     assert new_user.count()  == 1 
 
   def test_query(self, new_user):
-    user_query = new_user.querying()
+    user_query = new_user._query()
     assert user_query.count() == 1
     assert isinstance(user_query.all(), list)
     assert user_query.filter_by(name='Ayobami').first() == new_user

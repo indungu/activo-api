@@ -34,7 +34,7 @@ class ModelOperations(object):
         db.session.commit()
 
     @classmethod
-    def querying(cls):
+    def _query(cls):
         """
         return all database entries
         """

@@ -2,10 +2,11 @@
 
 import uuid
 
+from ..model_operations import ModelOperations
 from ..database import db
 
 
-class BaseModel(db.Model):
+class BaseModel(db.Model, ModelOperations):
     """ Base model """
 
     __abstract__ = True
