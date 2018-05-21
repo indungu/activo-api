@@ -2,7 +2,6 @@
 
 from .database import db
 from .base.base_model import BaseModel
-from .model_operations import ModelOperations
 
 class User(BaseModel):
     """Class for user db table."""
