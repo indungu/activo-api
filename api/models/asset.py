@@ -14,4 +14,4 @@ class Asset(AuditableBaseModel):
                                   nullable=False)
 
     def __repr__(self):
-        return '<Asset {}>'.format(self.name)
+        return '<Asset {}>'.format(self.tag)

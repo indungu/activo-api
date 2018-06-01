@@ -12,3 +12,4 @@ class BaseModel(db.Model, ModelOperations):
     __abstract__ = True
 
     id = db.Column(db.String(36), primary_key=True, default=uuid.uuid4)
+    deleted = db.Column(db.Boolean, nullable=True, default=False)

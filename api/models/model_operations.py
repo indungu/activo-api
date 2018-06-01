@@ -1,4 +1,5 @@
 from .database import db
+from datetime import datetime
 from uuid import uuid4
 
 class ModelOperations(object):
@@ -30,6 +31,8 @@ class ModelOperations(object):
         """
         Delete a model instance.
         """
+        self.deleted_at = datetime.utcnow()
+
         db.session.delete(self)
         db.session.commit()
 
