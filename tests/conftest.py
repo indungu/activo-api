@@ -4,8 +4,11 @@ from main import create_app
 from config import config
 from api.models.database import db as _db
 from api.models.user import User
+from api.models.asset_category import AssetCategory
+from api.models.asset import Asset
 
 config_name = 'testing'
+
 
 @pytest.yield_fixture(scope='session')
 def app():
@@ -25,6 +28,7 @@ def app():
 
     ctx.pop()
 
+
 @pytest.fixture(scope='function')
 def client(app):
     """
@@ -34,6 +38,7 @@ def client(app):
     :return: Flask app client
     """
     yield app.test_client()
+
 
 @pytest.fixture(scope='module')
 def new_user(app):
@@ -45,6 +50,16 @@ def new_user(app):
     }
     user = User(**params)
     return user
+
+
+@pytest.fixture(scope='module')
+def new_asset_category(app):
+    params = {
+      'name': 'Laptop'
+    }
+    asset_category = AssetCategory(**params)
+    return asset_category
+
 
 @pytest.fixture(scope='session')
 def init_db(app):

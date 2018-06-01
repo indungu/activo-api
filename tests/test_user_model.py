@@ -1,5 +1,5 @@
 from flask import jsonify
-from api.models.user import User
+from api.models import User
 import pprint
 
 class TestUserModel:

@@ -31,8 +31,6 @@ class ModelOperations(object):
         """
         Delete a model instance.
         """
-        self.deleted_at = datetime.utcnow()
-
         db.session.delete(self)
         db.session.commit()
 
