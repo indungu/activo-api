@@ -7,6 +7,7 @@ from api import api_blueprint
 
 from config import config
 from api.models.database import db
+from api.views import api_bp
 
 config_name = getenv('FLASK_ENV', default='production')
 
@@ -36,5 +37,7 @@ def create_app(config=config[config_name]):
 
     # initialize migration scripts
     migrate = Migrate(app, db)
+
+    app.register_blueprint(api_bp, url_prefix='/api/v1')
 
     return app
