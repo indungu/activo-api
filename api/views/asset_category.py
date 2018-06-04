@@ -1,11 +1,8 @@
-from flask import Blueprint, jsonify
 from flask_restplus import Resource
 
 from api.models import AssetCategory
 from . import api
 from api.middlewares.token_required import token_required
-
-# asset_category_bp = Blueprint('asset_category_bp', __name__)
 
 
 @api.route('/asset-categories/stats')
@@ -17,6 +14,12 @@ class AssetCategoryCount(Resource):
 
     @token_required
     def get(self):
+        """
+        Get method for asset categories and corresponding asset count
+
+        :return: asset categories and counts
+        """
+
         asset_categories = AssetCategory._query().all()
         data = []
         for asset_category in asset_categories:
