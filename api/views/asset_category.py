@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 
 from api.models import AssetCategory
-from . import api
+from main import api
 from api.middlewares.token_required import token_required
 
 
@@ -25,7 +25,7 @@ class AssetCategoryCount(Resource):
         for asset_category in asset_categories:
             data.append({
                 'name': asset_category.name,
-                'asset_count': len(asset_category.assets)
+                'asset_count': asset_category.assets_count
             })
         return {
             'message': 'Success',
