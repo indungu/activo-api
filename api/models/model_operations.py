@@ -1,6 +1,6 @@
 from .database import db
-from datetime import datetime
-from uuid import uuid4
+from api.utilities.dynamic_filter import DynamicFilter
+
 
 class ModelOperations(object):
     def save(self):
@@ -35,17 +35,23 @@ class ModelOperations(object):
         db.session.commit()
 
     @classmethod
-    def _query(cls):
+    def _query(cls, filter_condition):
         """
-        return all database entries
+        Returns filtered database entries. It takes model class and
+        filter_condition and returns database entries based on the filter
+        condition, eg, User._query('name,like,john'). Apart from 'like', other
+        comparators are eq(equal to), ne(not equal to), lt(less than),
+        le(less than or equal to) gt(greater than), ge(greater than or equal to)
+        :param filter_condition:
+        :return: an array of filtered records
         """
-        all_entries = cls.query
-        return all_entries
- 
+        dynamic_filter = DynamicFilter(cls)
+        return dynamic_filter.filter_query(filter_condition)
+
     @classmethod
     def count(cls):
         """
-        return total entries in the database
+        Returns total entries in the database
         """
         counts = cls.query.count()
         return counts

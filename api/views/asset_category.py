@@ -1,4 +1,5 @@
 from flask_restplus import Resource
+from flask import request
 
 from api.models import AssetCategory
 from main import api
@@ -17,8 +18,7 @@ class AssetCategoryStats(Resource):
         """
         Gets asset categories and the corresponding asset count
         """
-
-        asset_categories = AssetCategory._query().all()
+        asset_categories = AssetCategory._query(request.args)
         data = []
         for asset_category in asset_categories:
             data.append({
