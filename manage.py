@@ -7,6 +7,7 @@ from main import create_app
 from config import config
 
 from seeders import seed_asset_category
+import api.views
 
 # get flask config name from env or default to production config
 config_name = getenv('FLASK_ENV', default='production')

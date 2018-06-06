@@ -30,3 +30,20 @@ class AssetCategoryStats(Resource):
             'status': 'success',
             'data': data
         }
+        
+
+@api.route('/asset_categories/<string:id>')
+class AssetCategoryResource(Resource):
+    @token_required
+    def delete(self, id):
+        single_category = AssetCategory.get(id)
+        if not single_category:
+            raise ValidationError(dict(message='Asset category not found'), 404)
+
+        single_category.delete(request.decoded_token['UserInfo']['name'])
+
+        return {
+            'success': 'true',
+            'message': 'category deleted successfully'
+        }, 200
+
