@@ -4,7 +4,6 @@ from .base.auditable_model import AuditableBaseModel
 from . import Asset
 from .database import db
 
-
 class AssetCategory(AuditableBaseModel):
     """
     Model for asset categories
