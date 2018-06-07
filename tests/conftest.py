@@ -5,7 +5,6 @@ from config import config
 from api.models.database import db as _db
 from api.models.user import User
 from api.models.asset_category import AssetCategory
-from api.models.asset import Asset
 
 config_name = 'testing'
 

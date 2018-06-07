@@ -6,7 +6,7 @@ from api.middlewares.token_required import token_required
 
 
 @api.route('/asset-categories/stats')
-class AssetCategoryCount(Resource):
+class AssetCategoryStats(Resource):
     """
     Resource class for getting asset categories and
     their corresponding asset counts
@@ -15,19 +15,18 @@ class AssetCategoryCount(Resource):
     @token_required
     def get(self):
         """
-        Get method for asset categories and corresponding asset count
-
-        :return: asset categories and counts
+        Gets asset categories and the corresponding asset count
         """
 
         asset_categories = AssetCategory._query().all()
         data = []
         for asset_category in asset_categories:
             data.append({
+                'id': asset_category.id,
                 'name': asset_category.name,
                 'asset_count': asset_category.assets_count
             })
         return {
-            'message': 'Success',
+            'status': 'success',
             'data': data
         }
