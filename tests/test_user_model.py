@@ -3,7 +3,7 @@ from api.models import User
 import pprint
 
 class TestUserModel:
-  def test_new_user(self, new_user):
+  def test_new_user(self, new_user, init_db):
     assert new_user == new_user.save()
 
   def test_get(self, new_user):
@@ -25,5 +25,5 @@ class TestUserModel:
     assert isinstance(user_query.filter(new_user.name == 'Ayobami').all(), list)
 
   def test_delete(self, new_user):
-    new_user.delete('operations team')
+    new_user.delete()
     

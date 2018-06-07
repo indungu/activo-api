@@ -1,4 +1,5 @@
 import pytest
+import os
 
 from main import create_app
 from config import config
@@ -60,9 +61,24 @@ def new_asset_category(app):
     return asset_category
 
 
-@pytest.fixture(scope='session')
+"""
+the module scope is used here to prevent a test module data leaking into
+another
+"""
+
+
+@pytest.fixture(scope='module')
 def init_db(app):
     _db.create_all()
     yield _db
+    _db.session.close()
     _db.drop_all()
 
+
+@pytest.fixture(scope='module')
+def auth_headers():
+    """
+    set up request header
+    """
+    myToken = os.getenv('TEST_TOKEN')
+    return {'Authorization': myToken}

@@ -14,7 +14,6 @@ config_name = getenv('FLASK_ENV', default='production')
 
 api = Api(api_blueprint, doc=False)
 
-
 def initialize_errorhandlers(application):
     ''' Initialize error handlers '''
     application.register_blueprint(middleware_blueprint)
@@ -34,6 +33,7 @@ def create_app(config=config[config_name]):
 
     # import all models
     from api.models import User, Asset, AssetCategory, Attribute
+    import api.views
 
     import api.views
 

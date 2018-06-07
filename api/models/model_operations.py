@@ -18,7 +18,7 @@ class ModelOperations(object):
         """
         for field, value in kwargs.items():
             setattr(self, field, value)
-        db.session.commit()
+            db.session.commit()
 
     @classmethod
     def get(cls, id):
@@ -27,13 +27,11 @@ class ModelOperations(object):
         """
         return cls.query.get(id)
 
-    def delete(self, deleted_by):
+    def delete(self):
         """
         Delete a model instance.
         """
-        self.deleted = True
-        self.deleted_at = datetime.utcnow()
-        self.deleted_by = deleted_by
+        db.session.delete(self)
         db.session.commit()
 
     @classmethod
