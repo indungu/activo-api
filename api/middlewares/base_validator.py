@@ -1,7 +1,6 @@
 """Module for Validation error and error handler"""
 
 from flask import Blueprint, jsonify
-from main import api
 
 middleware_blueprint = Blueprint('middleware', __name__)
 
@@ -24,13 +23,3 @@ class ValidationError(Exception):
 
     def to_dict(self):
         return self.error
-
-
-@api.errorhandler(ValidationError)
-@middleware_blueprint.app_errorhandler(ValidationError)
-def handle_exception(error):
-    """Error handler called when a ValidationError Exception is raised"""
-
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response

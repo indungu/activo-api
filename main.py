@@ -1,10 +1,11 @@
 """Module for application factory."""
 from os import getenv
-from flask import Flask
+from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_restplus import Api
 from api import api_blueprint
-
+from api.middlewares.base_validator import middleware_blueprint
+from api.middlewares.base_validator import ValidationError
 from config import config
 from api.models.database import db
 
@@ -15,7 +16,6 @@ api = Api(api_blueprint, doc=False)
 
 def initialize_errorhandlers(application):
     ''' Initialize error handlers '''
-    from api.middlewares.base_validator import middleware_blueprint
     application.register_blueprint(middleware_blueprint)
     application.register_blueprint(api_blueprint)
 
@@ -38,3 +38,13 @@ def create_app(config=config[config_name]):
     migrate = Migrate(app, db)
 
     return app
+
+
+@api.errorhandler(ValidationError)
+@middleware_blueprint.app_errorhandler(ValidationError)
+def handle_exception(error):
+    """Error handler called when a ValidationError Exception is raised"""
+
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
