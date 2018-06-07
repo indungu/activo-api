@@ -4,8 +4,9 @@ from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_restplus import Api
 from api import api_blueprint
-from api.middlewares.base_validator import middleware_blueprint
-from api.middlewares.base_validator import ValidationError
+from api.middlewares.base_validator import (middleware_blueprint,
+                                            ValidationError)
+
 from config import config
 from api.models.database import db
 
