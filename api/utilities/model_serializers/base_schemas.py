@@ -1,28 +1,43 @@
 """ Module for base marshmallow schema. """
 from marshmallow import Schema, fields
-from flask import make_response, json, abort
 from json import JSONDecodeError
+
+from ..messages.error_messages import serialization_errors
+from ...middlewares.base_validator import ValidationError
 
 
 class BaseSchema(Schema):
     """Base marshmallow schema with common attributes."""
     id = fields.String(dump_only=True)
-    deleted = fields.Boolean()
+    deleted = fields.Boolean(dump_only=True)
 
-    def load_into_schema(self, data):
-        """Helper function to load raw request data into schema"""
+    def load_json_into_schema(self, data):
+        """Helper function to load raw json request data into schema"""
 
         try:
             data, errors = self.loads(data)
         except JSONDecodeError:
-            abort(make_response(json.dumps(
-                {'message': 'Invalid JSON input provided'}), 400))
-
+            raise ValidationError(
+                dict(errors=serialization_errors['json_invalid'],
+                     message='failed'), 400)
         if errors:
-            response = make_response(json.dumps({'errors': errors}))
-            response.headers['content-type'] = 'application/json'
-            response.status_code = 422
-            abort(response)
+            raise ValidationError(dict(errors=errors,
+                                       message='An error occurred'), 422)
+
+        return data
+
+    def load_object_into_schema(self, data):
+        """Helper function to load python objects into schema"""
+
+        try:
+            data, errors = self.load(data)
+        except KeyError as error:
+            raise ValidationError(dict(errors=error,
+                                       message='An error occurred'), 400)
+        if errors:
+            raise ValidationError(dict(errors=errors,
+                                       message='An error occurred'), 422)
+
         return data
 
 

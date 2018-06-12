@@ -1,12 +1,15 @@
+"""Module for generic model operations mixin."""
 from .database import db
-from datetime import datetime
-from uuid import uuid4
+from ..utilities.validators.delete_validator import delete_validator
+from ..middlewares.base_validator import ValidationError
+from ..utilities.messages.error_messages import database_errors
+
 
 class ModelOperations(object):
+    """Mixin class with generic model operations."""
     def save(self):
         """
         Save a model instance
-        :return: Model instance
         """
         db.session.add(self)
         db.session.commit()
@@ -18,7 +21,7 @@ class ModelOperations(object):
         """
         for field, value in kwargs.items():
             setattr(self, field, value)
-            db.session.commit()
+        db.session.commit()
 
     @classmethod
     def get(cls, id):
@@ -27,12 +30,31 @@ class ModelOperations(object):
         """
         return cls.query.get(id)
 
+    def get_child_relationships(self):
+        """
+        Method to get all child relationships a model has.
+        This is used to ascertain if a model has relationship(s) or
+        not when validating delete operation.
+        It must be overridden in subclasses and takes no argument.
+        :return None if there are no child relationships.
+        A tuple of all child relationships eg (self.relationship_field1,
+        self.relationship_field2)
+        """
+        raise NotImplementedError("The get_relationships method must be overridden in all child model classes") #noqa
+
     def delete(self):
         """
-        Delete a model instance.
+        Soft delete a model instance.
         """
-        db.session.delete(self)
-        db.session.commit()
+        relationships = self.get_child_relationships()
+        if delete_validator(relationships):
+            self.deleted = True
+            db.session.add(self)
+            db.session.commit()
+        else:
+            raise ValidationError(dict(
+                message=database_errors['model_delete_children'].format(relationships)),
+                                  status_code=403)
 
     @classmethod
     def _query(cls):
@@ -41,7 +63,7 @@ class ModelOperations(object):
         """
         all_entries = cls.query
         return all_entries
- 
+
     @classmethod
     def count(cls):
         """
