@@ -15,5 +15,12 @@ class Attribute(BaseModel):
                                   db.ForeignKey('asset_categories.id'),
                                   nullable=False)
 
+    def get_child_relationships(self):
+        """
+        Method to get all child relationships a model has. Overide in the
+        subclass if the model has child models.
+        """
+        return None
+
     def __repr__(self):
         return '<Attribute {}>'.format(self.label)
