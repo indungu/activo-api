@@ -75,19 +75,40 @@ jobs:
             # flask db init
             # flask db migrate
             flask db upgrade
+      - *cmd_download_cc_test_reporter
   run_tests:
     <<: *defaults
     steps:
       - checkout
+      - *cmd_attach_workspace
       - *cmd_install_dependencies
       - *cmd_save_cache
       - *cmd_wait_for_postgres
       - *cmd_restore_cache
+      - *cmd_download_cc_test_reporter
       - run:
           name: Run tests
           command: |
             . venv/bin/activate
-            pytest
+            pytest --cov=api/ tests --cov-report xml
+            /tmp/cc-test-reporter format-coverage coverage.xml -t "coverage.py" -o "tmp/cc.testreport.json"
+
+      - persist_to_workspace:
+          root: tmp/
+          paths:
+            - cc.testreport.json
+
+  upload_coverage:
+    <<: *defaults
+    steps:
+      - checkout
+      - *cmd_download_cc_test_reporter
+      - *cmd_attach_workspace
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            /tmp/cc-test-reporter upload-coverage -i tmp/cc.testreport.json
+
 
 workflows:
   version: 2
@@ -97,3 +118,6 @@ workflows:
       - run_tests:
           requires:
             - build
+      - upload_coverage:
+          requires:
+            - run_tests

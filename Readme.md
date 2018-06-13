@@ -1,4 +1,6 @@
 ## Activo
+[![Maintainability](https://api.codeclimate.com/v1/badges/6594af3ff034d4737892/maintainability)](https://codeclimate.com/repos/5b16a8d8e4ba1a02d5001488/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/6594af3ff034d4737892/test_coverage)](https://codeclimate.com/repos/5b16a8d8e4ba1a02d5001488/test_coverage)
+
 An asset-management tool for Andela
 
 # Description 

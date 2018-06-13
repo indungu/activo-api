@@ -5,6 +5,7 @@ astroid==1.6.3
 attrs==18.1.0
 cffi==1.11.5
 click==6.7
+coverage==4.5.1
 cryptography==2.2.2
 Flask==1.0.2
 Flask-Migrate==2.1.1
@@ -31,6 +32,7 @@ pycparser==2.18
 PyJWT==1.4.2
 pylint==1.8.4
 pytest==3.5.1
+pytest-cov==2.5.1
 python-dateutil==2.7.3
 python-dotenv==0.8.2
 python-editor==1.0.3
