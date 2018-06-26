@@ -4,7 +4,9 @@
 An asset-management tool for Andela
 
 # Description 
- The **activo-api** is the backbone of an application for managing physical assets of the organisation. The project enables  centralised management of assets of the organisation. The the api provides features for registering the allocation and usage of assets, repairs and conditions of devices, allocation of computer devices and seat allocations.
+ The **activo-api** is the backbone of an application for managing physical assets of the organisation. The project enables  centralised management of assets of the organisation. The api provides features for registering the allocation and usage of assets, repairs and conditions of devices, allocation of computer devices and seat allocations.
+
+ The API documentation can be found here: [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/8e9a3d77c5a5ab9b7f68)
 
  ## Key Application features  
 1.	Inventory Management
@@ -55,14 +57,20 @@ An asset-management tool for Andela
 - Create Application environment variables and save them in .env file
     ```
     FLASK_ENV = "development" # Takes either development, production, testing
-    DATABASE_URI = "" # Development and production db uri
-    TEST_DATABASE_URI = "" # Testing db uri
+    API_BASE_URL_V1 = "" # The base url for V1 of the API
+    DATABASE_URI = "postgresql://YOUR_DB_USER:YOUR_DB_PASSWORD@YOUR_HOST/YOUR_DATABASE_NAME" # Development and production postgres db uri
+    TEST_DATABASE_URI = "postgresql://YOUR_DB_USER:YOUR_DB_PASSWORD@YOUR_HOST/YOUR_TEST_DATABASE_NAME" # Testing postgres db uri
+    JWT_PUBLIC_KEY = "" # Andela Authentication public key, obtained from the technology dept
     ```
-- Running migrations
-    - initialize the database:
-        ```
-        flask init db
-        ```    
+- Apply migrations
+    ```
+    flask db upgrade
+    ```
+- Run the application.
+    ```
+    python manage.py runserver
+    ```
+- Should you make changes to the database models, run migrations as follows   
     - Migrate database:
         ```
         flask db migrate
@@ -71,10 +79,6 @@ An asset-management tool for Andela
         ```
         flask db upgrade
         ```
-- Run application.
-    ```
-    python manage.py runserver
-    ```
 
 
 
